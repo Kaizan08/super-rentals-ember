@@ -3,10 +3,12 @@ import { render, click, visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import EmberObject from '@ember/object';
 import hbs from 'htmlbars-inline-precompile';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
 module('Acceptance | list rentals', function(hooks) {
   setupApplicationTest(hooks);
-
+  setupMirage(hooks);
+  
   hooks.beforeEach(function () {
     this.rental = EmberObject.create({
       image: 'fake.png',
