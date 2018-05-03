@@ -1,14 +1,18 @@
 import { module, test } from 'qunit';
-import { render, click, visit, currentURL } from '@ember/test-helpers';
+import { render, click, visit, currentURL, fillIn, triggerKeyEvent } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import EmberObject from '@ember/object';
 import hbs from 'htmlbars-inline-precompile';
 import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { resolve } from 'rsvp';
+
+const ITEMS = [{city: 'San Francisco'}, {city: 'Portland'}, {city: 'Seattle'}];
+const FILTERED_ITEMS = [{city: 'San Francisco'}]; 
 
 module('Acceptance | list rentals', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
-  
+
   hooks.beforeEach(function () {
     this.rental = EmberObject.create({
       image: 'fake.png',
@@ -19,6 +23,10 @@ module('Acceptance | list rentals', function(hooks) {
       bedrooms: 3
     });
   })
+
+  test('should initially load all listings', function (assert) {
+    this.set('filterByCity', () => resolve({ results: ITEMS }));
+  });
 
   test('should display rental details', async function(assert) {
     await render(hbs`{{rental-listing rental=rental}}`);
